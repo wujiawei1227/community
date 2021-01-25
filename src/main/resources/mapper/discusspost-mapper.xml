@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wu.dao.Discuss_PostMapper">
+    <sql id="selectFields">
+        id,user_id,title,content,type,status,create_time,content,comment_count,score
+    </sql>
+    <select id="selctDiscuss_post" resultType="com.wu.pojo.Discuss_Post">
+        select <include refid="selectFields"></include>
+        from discuss_post
+        where status!=2
+        <if test="user_id!=0">
+            and user_id=#{user_id}
+        </if>
+        order by type desc,create_time desc
+        limit #{offset},#{limit}
+    </select>
+    <select id="Discuss_portCount" resultType="int">
+        select count(user_id)
+        from discuss_post
+        where status != 2
+        <if test="userId!=0">
+            and  user_id=#{userId}
+        </if>
+    </select>
+</mapper>
