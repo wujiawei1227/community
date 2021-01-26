@@ -14,4 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 public interface UserMapper {
     User findUserById(int id);
+    User findUserByUsername(String username);
+    User findUserByMail(String mail);
+    int insertUser(User user);
+
+    int updateStatus(int id, int status);
+
+    int updateHeader(int id, String headerUrl);
+
+    int updatePassword(int id, String password);
 }
