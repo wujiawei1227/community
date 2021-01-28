@@ -1,7 +1,9 @@
 package com.wu.service;
 
+import com.wu.dao.LoginTicketMapper;
 import com.wu.dao.UserMapper;
 import com.wu.pojo.CommunityConstant;
+import com.wu.pojo.Login_Ticket;
 import com.wu.pojo.User;
 import com.wu.utils.CommunityUtil;
 import com.wu.utils.MailClient;
@@ -31,6 +33,8 @@ public class UserService implements CommunityConstant {
     private MailClient client;
     @Autowired
     private TemplateEngine template;
+    @Autowired
+    private LoginTicketMapper loginTicketMapper;
 
     @Value("${community.path.domain}")
     private String domain;
@@ -41,7 +45,16 @@ public class UserService implements CommunityConstant {
     public User findUserById(int id){
         return mapper.findUserById(id);
     }
+    public User findUserByUsername(String username){
+      return mapper.findUserByUsername(username);
+    }
 
+    /*
+    *
+     * @Description //TODO 注册用户
+     * @Param [user]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
     public Map<String,Object> register(User user){
         Map<String,Object> map=new HashMap<>();
        if (user!=null){
@@ -67,8 +80,6 @@ public class UserService implements CommunityConstant {
                map.put("mailMessage","该邮箱已被注册");
                return map;
            }
-
-
            //设置user属性
            user.setSalt(CommunityUtil.generateUUID().substring(0,5));
            user.setPassword(user.getPassword()+user.getSalt());
@@ -90,6 +101,12 @@ public class UserService implements CommunityConstant {
         return map;
 
     }
+    /*
+    *
+     * @Description //TODO 激活用户
+     * @Param [userId, code]
+     * @return int
+     **/
     public int activation(int userId,String code){
         User user=mapper.findUserById(userId);
         if (user.getStatus()==1){
@@ -100,7 +117,51 @@ public class UserService implements CommunityConstant {
         }else {
             return ACTIVATION_FALEED;
         }
-
-
+    }
+    /*
+    *
+     * @Description //TODO 注册用户
+     * @Param [username, password, expiredSeconds]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
+    public Map<String,Object>login(String username,String  password,int expiredSeconds){
+        Map<String ,Object> map=new HashMap<>();
+        //空值处理
+        if (StringUtils.isBlank(username)){
+            map.put("usernameMessage","用户名不能为空");
+            return map;
+        }
+        if (StringUtils.isBlank(password)){
+            map.put("passwordMessage","密码不能为空");
+            return map;
+        }
+        //验证账号
+        User userByUsername = mapper.findUserByUsername(username);
+        if (userByUsername==null){
+            map.put("usernameMsg","该用户不存在");
+            return map;
+        } if (userByUsername.getStatus()==0) {
+            map.put("usernameMsg", "该用户未激活");
+            return map;
+        }
+        //验证密码
+        String s = password + userByUsername.getSalt();
+        if (!userByUsername.getPassword().equals(s))
+        {
+            map.put("passwordMsg","密码不正确");
+            return map;
+        }
+        //生成登录凭证
+        Login_Ticket login_ticket=new Login_Ticket();
+        login_ticket.setUser_id(userByUsername.getId());
+        login_ticket.setTicket(CommunityUtil.generateUUID());
+        login_ticket.setStatus(0);
+        login_ticket.setExpired(new Date(System.currentTimeMillis()+expiredSeconds+1000));
+        loginTicketMapper.insertLoginTicket(login_ticket);
+        map.put("ticket",login_ticket.getTicket());
+        return map;
+    }
+    public void logout(String ticket){
+        loginTicketMapper.updateStatus(ticket,1);
     }
 }

@@ -22,4 +22,19 @@ public interface CommunityConstant {
      * @return 
      **/
     int ACTIVATION_FALEED=2;
+    /*
+    *
+     * @Description //TODO默认状态登录凭证的超时时间
+     * @Param
+     * @return
+     **/
+    int DEFAULT_EXPIRED_SECONDS=3600*12;
+
+    /*
+    *
+     * @Description //TODO 记住状态下的登录超时时间
+     * @Param 
+     * @return 
+     **/
+    int REMEMBER_EXPIRED_SECONDS=3600*24*30;
 }
