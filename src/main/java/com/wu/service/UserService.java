@@ -153,7 +153,7 @@ public class UserService implements CommunityConstant {
         }
         //生成登录凭证
         Login_Ticket login_ticket=new Login_Ticket();
-        login_ticket.setUser_id(userByUsername.getId());
+        login_ticket.setUserId(userByUsername.getId());
         login_ticket.setTicket(CommunityUtil.generateUUID());
         login_ticket.setStatus(0);
         login_ticket.setExpired(new Date(System.currentTimeMillis()+expiredSeconds+1000));
@@ -163,5 +163,8 @@ public class UserService implements CommunityConstant {
     }
     public void logout(String ticket){
         loginTicketMapper.updateStatus(ticket,1);
+    }
+    public Login_Ticket getTicketByTicket(String ticket){
+       return loginTicketMapper.findLoginTicket(ticket);
     }
 }

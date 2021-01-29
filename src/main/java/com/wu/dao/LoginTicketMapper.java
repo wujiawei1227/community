@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public interface LoginTicketMapper {
     @Select({
             "insert into login_ticket(user_id,ticket,status,expired) ",
-            "values(#{user_id},#{ticket},#{status},#{expired})"
+            "values(#{userId},#{ticket},#{status},#{expired})"
     })
     @Options(useGeneratedKeys = true,keyProperty = "id")
     void insertLoginTicket(Login_Ticket login_ticket);

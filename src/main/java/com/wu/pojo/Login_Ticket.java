@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class Login_Ticket {
     private int id;
-    private int user_id;
+    private int userId;
     private String ticket;
     private int status;//0-有效 1-无效
     private Date expired;
@@ -20,7 +20,7 @@ public class Login_Ticket {
     public String toString() {
         return "Login_Ticket{" +
                 "id=" + id +
-                ", user_id=" + user_id +
+                ", userId=" + userId +
                 ", ticket='" + ticket + '\'' +
                 ", status=" + status +
                 ", expired=" + expired +
@@ -28,7 +28,6 @@ public class Login_Ticket {
     }
 
     public int getId() {
-
         return id;
     }
 
@@ -36,12 +35,12 @@ public class Login_Ticket {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getTicket() {
