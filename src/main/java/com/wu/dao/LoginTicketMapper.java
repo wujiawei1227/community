@@ -19,7 +19,7 @@ public interface LoginTicketMapper {
 
     @Select({
             "select id,user_id,ticket,status,expired ",
-            "from login_ticket where status!=1 and ticket=#{ticket} "
+            "from login_ticket where ticket=#{ticket}"
     })
     Login_Ticket findLoginTicket(String ticket);
     @Update({
