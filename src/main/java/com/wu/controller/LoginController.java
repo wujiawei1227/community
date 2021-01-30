@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.wu.pojo.CommunityConstant;
 import com.wu.pojo.User;
 import com.wu.service.UserService;
+import com.wu.utils.HostHolder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,8 @@ public class LoginController implements CommunityConstant {
     private Producer producer;
     @Autowired
     private UserService service;
+    @Autowired
+    private HostHolder holder;
 
     @Value("${server.servlet.context-path}")
     private String contextPath;
@@ -140,6 +143,7 @@ public class LoginController implements CommunityConstant {
     public String logout(@CookieValue("ticket")String ticket)
     {
         service.logout(ticket);
+        holder.clear();
         return "redirect:/login";
     }
 
