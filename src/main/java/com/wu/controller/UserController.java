@@ -1,5 +1,6 @@
 package com.wu.controller;
 
+import com.wu.annotation.LoginRequired;
 import com.wu.pojo.User;
 import com.wu.service.UserService;
 import com.wu.utils.CommunityUtil;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,10 +47,12 @@ public class UserController {
     private UserService service;
     @Autowired
     private HostHolder holder;
+    @LoginRequired
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
     }
+    @LoginRequired
     @RequestMapping(path = "/upload",method = RequestMethod.POST)
     public String updateHeader(MultipartFile headerImage, Model model)
     {
