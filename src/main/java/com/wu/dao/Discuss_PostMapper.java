@@ -20,5 +20,6 @@ public interface Discuss_PostMapper {
 
   List<Discuss_Post> selctDiscuss_post(int user_id,int offset,int limit);
   int Discuss_portCount(@Param("userId") int user_id);
-
+  int insertDiscussPost(Discuss_Post post);
+  Discuss_Post findById(int id);
 }

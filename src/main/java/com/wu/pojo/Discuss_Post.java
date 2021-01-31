@@ -17,7 +17,7 @@ public class Discuss_Post {
    private int type;//o表示普通，1表示置顶
    private int status;//0表示正常 1表示精华 2表示拉黑
    private Date createTime;
-   private int comment_count;
+   private int commentCount;
    private double score;
 
    @Override
@@ -30,7 +30,7 @@ public class Discuss_Post {
               ", type=" + type +
               ", status=" + status +
               ", createTime=" + createTime +
-              ", comment_count=" + comment_count +
+              ", commentCount=" + commentCount +
               ", score=" + score +
               '}';
    }
@@ -91,12 +91,12 @@ public class Discuss_Post {
       this.createTime = createTime;
    }
 
-   public int getComment_count() {
-      return comment_count;
+   public int getCommentCount() {
+      return commentCount;
    }
 
-   public void setComment_count(int comment_count) {
-      this.comment_count = comment_count;
+   public void setCommentCount(int commentCount) {
+      this.commentCount = commentCount;
    }
 
    public double getScore() {
