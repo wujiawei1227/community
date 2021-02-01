@@ -11,25 +11,25 @@ import java.util.Date;
 
 public class Comment {
     private int id;
-    private int user_id;
-    private int entity_type;
-    private int entity_id;
-    private int target_id;
+    private int userId;
+    private int entityType;
+    private int entityId;
+    private int targetId;
     private String content;
     private int status;
-    private Date cteate_time;
+    private Date createTime;
 
     @Override
     public String toString() {
         return "Comment{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", entity_type=" + entity_type +
-                ", entity_id=" + entity_id +
-                ", target_id=" + target_id +
+                ", userId=" + userId +
+                ", entityType=" + entityType +
+                ", entityId=" + entityId +
+                ", targetId=" + targetId +
                 ", content='" + content + '\'' +
                 ", status=" + status +
-                ", cteate_time=" + cteate_time +
+                ", createTime=" + createTime +
                 '}';
     }
 
@@ -41,36 +41,36 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getEntity_type() {
-        return entity_type;
+    public int getEntityType() {
+        return entityType;
     }
 
-    public void setEntity_type(int entity_type) {
-        this.entity_type = entity_type;
+    public void setEntityType(int entityType) {
+        this.entityType = entityType;
     }
 
-    public int getEntity_id() {
-        return entity_id;
+    public int getEntityId() {
+        return entityId;
     }
 
-    public void setEntity_id(int entity_id) {
-        this.entity_id = entity_id;
+    public void setEntityId(int entityId) {
+        this.entityId = entityId;
     }
 
-    public int getTarget_id() {
-        return target_id;
+    public int getTargetId() {
+        return targetId;
     }
 
-    public void setTarget_id(int target_id) {
-        this.target_id = target_id;
+    public void setTargetId(int targetId) {
+        this.targetId = targetId;
     }
 
     public String getContent() {
@@ -89,11 +89,11 @@ public class Comment {
         this.status = status;
     }
 
-    public Date getCteate_time() {
-        return cteate_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCteate_time(Date cteate_time) {
-        this.cteate_time = cteate_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

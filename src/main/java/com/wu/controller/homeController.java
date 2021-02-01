@@ -35,7 +35,7 @@ public class homeController {
         page.setPath("/index");
         List<Discuss_Post> list = discussPortService.selectDiscussPort(0, page.getOffset(), page.getLimit());
         List<Map<String,Object>> discussPosts=new ArrayList<>();
-        if (list!=null){
+            if (list!=null){
             for (Discuss_Post discuss_post:list) {
                 Map<String ,Object> map=new HashMap<>();
                 map.put("post",discuss_post);
