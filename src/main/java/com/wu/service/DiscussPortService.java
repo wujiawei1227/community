@@ -46,5 +46,8 @@ public class DiscussPortService {
     public Discuss_Post findById(int id){
         return mapper.findById(id);
     }
+    public int updateCommentCount(int id,int commentCount){
+        return mapper.updateCommentCount(id,commentCount);
+    }
 
 }

@@ -22,4 +22,5 @@ public interface Discuss_PostMapper {
   int Discuss_portCount(@Param("userId") int user_id);
   int insertDiscussPost(Discuss_Post post);
   Discuss_Post findById(int id);
+  int  updateCommentCount(int id,int commentCount);
 }

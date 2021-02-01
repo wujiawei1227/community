@@ -11,12 +11,12 @@ import java.util.Date;
 
 public class Comment {
     private int id;
-    private int userId;
-    private int entityType;
-    private int entityId;
-    private int targetId;
+    private Integer userId;
+    private Integer entityType;
+    private Integer entityId;
+    private Integer targetId;
     private String content;
-    private int status;
+    private Integer status;
     private Date createTime;
 
     @Override
@@ -41,35 +41,35 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public int getEntityType() {
+    public Integer getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(int entityType) {
+    public void setEntityType(Integer entityType) {
         this.entityType = entityType;
     }
 
-    public int getEntityId() {
+    public Integer getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(int entityId) {
+    public void setEntityId(Integer entityId) {
         this.entityId = entityId;
     }
 
-    public int getTargetId() {
+    public Integer getTargetId() {
         return targetId;
     }
 
-    public void setTargetId(int targetId) {
+    public void setTargetId(Integer targetId) {
         this.targetId = targetId;
     }
 
@@ -81,11 +81,11 @@ public class Comment {
         this.content = content;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
