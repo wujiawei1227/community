@@ -67,7 +67,7 @@
 						<h6><b class="square"></b> 来自 <i class="text-success" th:utext="${target.username}">落基山脉下的闲人</i> 的私信</h6>
 					</div>
 					<div class="col-4 text-right">
-						<button type="button" class="btn btn-secondary btn-sm" onclick="location.href='letter.html';">返回</button>
+						<button type="button" class="btn btn-secondary btn-sm" onclick="back();">返回</button>
 						<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#sendModal">给TA私信</button>
 					</div>
 				</div>
@@ -85,7 +85,7 @@
 								<form>
 									<div class="form-group">
 										<label for="recipient-name" class="col-form-label">发给：</label>
-										<input type="text" class="form-control" id="recipient-name" value="落基山脉下的闲人">
+										<input type="text" class="form-control" id="recipient-name" th:value="${target.username}">
 									</div>
 									<div class="form-group">
 										<label for="message-text" class="col-form-label">内容：</label>
@@ -124,7 +124,10 @@
 							<div class="toast-header">
 								<strong class="mr-auto" th:utext="${map.fromUser.username}">落基山脉下的闲人</strong>
 								<small th:text="${#dates.format(map.letter.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-25 15:49:32</small>
-								<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+								<button type="button" class="ml-2 mb-1 close" data-dismiss="toast"
+										th:data-id="${map.letter.id}" th:data-conversation="${map.letter.conversationId}"
+										onclick="deleteMessage(this.getAttribute('data-id'),this.getAttribute('data-conversation'))"
+										aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -221,5 +224,19 @@
 
 	<script th:src="@{/js/global.js}"></script>
 	<script th:src="@{/js/letter.js}"></script>
+	<script>
+		function back() {
+			location.href = CONTEXT_PATH + "/letter/list";
+		}
+	</script>
+	<script>
+		function deleteMessage( id,conversation) {
+					$.get(
+							CONTEXT_PATH+"/letter/delete",
+							{"messageId":id,"conversationId":conversation}
+					)
+
+		}
+	</script>
 </body>
 </html>

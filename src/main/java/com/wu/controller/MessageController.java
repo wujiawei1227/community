@@ -5,6 +5,7 @@ import com.wu.pojo.Page;
 import com.wu.pojo.User;
 import com.wu.service.MessageService;
 import com.wu.service.UserService;
+import com.wu.utils.CommunityUtil;
 import com.wu.utils.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: community
@@ -33,6 +32,7 @@ public class MessageController {
     private HostHolder holder;
     @Autowired
     private UserService userService;
+
 
     @RequestMapping(path = "/letter/list",method = RequestMethod.GET)
     public String getLetterList(Model model, Page page)
@@ -65,6 +65,13 @@ public class MessageController {
         model.addAttribute("letterUnreadCount",letterUnReadCount);
         return "/site/letter";
     }
+    @RequestMapping(path = "/letter/delete" ,method = RequestMethod.GET)
+    public String  delete(int messageId,String conversationId){
+        service.deleteMessage(messageId);
+
+
+        return "redirect:/letter/detail/"+conversationId;
+    }
     @RequestMapping(path = "/letter/detail/{conversationId}",method = RequestMethod.GET)
     public String getLetterDetail(@PathVariable("conversationId")String conversationId,Page page,Model model)
     {
@@ -89,8 +96,31 @@ public class MessageController {
 
         //私信目标
         model.addAttribute("target",getLetterTarget(conversationId));
+        List<Integer> letterIds = getLetterIds(lettersList);
+        if (letterIds!=null&&!letterIds.isEmpty())
+        {
+            service.readMessage(letterIds);
+        }
         return "/site/letter-detail";
 
+    }
+    //获取未读信息id
+    private List<Integer> getLetterIds(List<Message> list)
+    {
+        List<Integer> ids=new ArrayList<>();
+
+        if (list!=null)
+        {
+            for (Message m :list) {
+
+                if (holder.getUser().getId()==m.getToId()&&m.getStatus()==0)
+                {
+                    ids.add(m.getId());
+                }
+
+            }
+        }
+        return ids;
     }
     private User getLetterTarget(String conversationId)
     {
@@ -103,5 +133,30 @@ public class MessageController {
         }else {
             return userService.findUserById(id0);
         }
+    }
+    @RequestMapping(path = "/letter/send",method = RequestMethod.POST)
+    @ResponseBody
+    public String sendLetter(String toName,String content)
+    {
+        User target = userService.findUserByUsername(toName);
+        if (target==null)
+        {
+            return CommunityUtil.getJSONString(1,"目标用户不存在");
+        }
+        Message message=new Message();
+        message.setFromId(holder.getUser().getId());
+        message.setToId(target.getId());
+        if (message.getFromId()<message.getToId())
+        {
+            message.setConversationId(message.getFromId()+"_"+message.getToId());
+        }else {
+            message.setConversationId(message.getToId()+"_"+message.getFromId());
+        }
+        message.setContent(content);
+        message.setCreateTime(new Date());
+        service.addMessage(message);
+
+        return CommunityUtil.getJSONString(0);
+
     }
 }

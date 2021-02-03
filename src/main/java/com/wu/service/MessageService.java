@@ -2,9 +2,13 @@ package com.wu.service;
 
 import com.wu.dao.MessageMapper;
 import com.wu.pojo.Message;
+import com.wu.utils.SensitiveFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
+import org.unbescape.html.HtmlEscape;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +20,8 @@ import java.util.List;
 @Service
 public class MessageService {
 
+    @Autowired
+    private SensitiveFilter filter;
     @Autowired
     private MessageMapper mapper;
 
@@ -39,4 +45,19 @@ public class MessageService {
     {
         return mapper.selectLetterUnreadCount(userId,conversationId);
     }
+    public int addMessage(Message message){
+        message.setContent(HtmlUtils.htmlEscape(message.getContent()));
+        message.setContent(filter.filter(message.getContent()));
+        return mapper.insertMessage(message);
+    }
+    public int readMessage(List<Integer> ids)
+    {
+
+        return mapper.updateStatus(ids,1);
+    }
+   public void deleteMessage(int id){
+        List<Integer> list=new ArrayList<>();
+        list.add(id);
+        mapper.updateStatus(list,2);
+   }
 }
