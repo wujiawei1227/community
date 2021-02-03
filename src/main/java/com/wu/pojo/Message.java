@@ -11,23 +11,23 @@ import java.util.Date;
 
 public class Message {
     private int id;
-    private int from_id;
-    private int to_id;
-    private String conversastion_id;
+    private int fromId;
+    private int toId;
+    private String conversationId;
     private String content;
     private int status;//0表示未读 1表示已读 2表示删除
-    private Date create_time;
+    private Date createTime;
 
     @Override
     public String toString() {
         return "Message{" +
                 "id=" + id +
-                ", from_id=" + from_id +
-                ", to_id=" + to_id +
-                ", conversastion_id='" + conversastion_id + '\'' +
+                ", fromId=" + fromId +
+                ", toId=" + toId +
+                ", conversationId='" + conversationId + '\'' +
                 ", content='" + content + '\'' +
                 ", status=" + status +
-                ", create_time=" + create_time +
+                ", createTime=" + createTime +
                 '}';
     }
 
@@ -39,28 +39,28 @@ public class Message {
         this.id = id;
     }
 
-    public int getFrom_id() {
-        return from_id;
+    public int getFromId() {
+        return fromId;
     }
 
-    public void setFrom_id(int from_id) {
-        this.from_id = from_id;
+    public void setFromId(int fromId) {
+        this.fromId = fromId;
     }
 
-    public int getTo_id() {
-        return to_id;
+    public int getToId() {
+        return toId;
     }
 
-    public void setTo_id(int to_id) {
-        this.to_id = to_id;
+    public void setToId(int toId) {
+        this.toId = toId;
     }
 
-    public String getConversastion_id() {
-        return conversastion_id;
+    public String getConversationId() {
+        return conversationId;
     }
 
-    public void setConversastion_id(String conversastion_id) {
-        this.conversastion_id = conversastion_id;
+    public void setConversationId(String conversationId) {
+        this.conversationId = conversationId;
     }
 
     public String getContent() {
@@ -79,12 +79,11 @@ public class Message {
         this.status = status;
     }
 
-    public Date getCreate_time() {
-        return create_time;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Date create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
-

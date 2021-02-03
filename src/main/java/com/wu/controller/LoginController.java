@@ -115,8 +115,6 @@ public class LoginController implements CommunityConstant {
     public String login(String username,String password,String code,boolean rememberMe,
                         Model model,HttpSession session,HttpServletResponse response){
        String kaptcha = (String)session.getAttribute("kaptcha");
-       System.out.println("session中验证码为"+kaptcha);
-       System.out.println("传入验证码为"+code);
        if (StringUtils.isBlank(kaptcha)||StringUtils.isBlank(code)||!code.equalsIgnoreCase(kaptcha))
        {
            model.addAttribute("codeMsg","验证码不正确");
@@ -130,7 +128,6 @@ public class LoginController implements CommunityConstant {
            cookie.setPath(contextPath);
            cookie.setMaxAge(expiredSeconds);
            response.addCookie(cookie);
-           System.out.println("验证通过");
            return "redirect:/index";
        }else {
            System.out.println("验证失败");
