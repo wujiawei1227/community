@@ -37,6 +37,7 @@ public class MessageController {
     @RequestMapping(path = "/letter/list",method = RequestMethod.GET)
     public String getLetterList(Model model, Page page)
     {
+
         User user=holder.getUser();
         //分页信息
          page.setLimit(5);
@@ -138,6 +139,7 @@ public class MessageController {
     @ResponseBody
     public String sendLetter(String toName,String content)
     {
+
         User target = userService.findUserByUsername(toName);
         if (target==null)
         {

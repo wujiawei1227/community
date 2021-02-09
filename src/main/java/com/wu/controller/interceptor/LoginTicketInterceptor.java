@@ -1,7 +1,9 @@
 package com.wu.controller.interceptor;
 
 import com.wu.pojo.Login_Ticket;
+import com.wu.pojo.Message;
 import com.wu.pojo.User;
+import com.wu.service.MessageService;
 import com.wu.service.UserService;
 import com.wu.utils.CookieUtil;
 import com.wu.utils.HostHolder;
@@ -28,6 +30,8 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         private UserService service;
         @Autowired
         private HostHolder holder;
+        @Autowired
+        private MessageService messageService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //从cookie中获取凭证
@@ -62,6 +66,8 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         if (user!=null&&modelAndView!=null)
         {
             modelAndView.addObject("loginuser",user);
+            modelAndView.addObject("unReadMessageCount",messageService.findLetterUnreadCount(user.getId(),null));
+
         }
     }
 
