@@ -1,6 +1,7 @@
 package com.wu.controller;
 
 import com.wu.pojo.User;
+import com.wu.service.LikeService;
 import com.wu.service.UserService;
 import com.wu.utils.CommunityUtil;
 import com.wu.utils.HostHolder;
@@ -46,6 +47,8 @@ public class UserController {
     private UserService service;
     @Autowired
     private HostHolder holder;
+    @Autowired
+    private LikeService likeService;
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
@@ -127,5 +130,19 @@ public class UserController {
 
         return "redirect:/login";
 
+    }
+    //个人主页
+    @RequestMapping(value = "/profile/{userId}",method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId,Model model){
+        User user=service.findUserById(userId);
+        if (user==null)
+        {
+            throw new RuntimeException("该用户不存在");
+        }
+        model.addAttribute("user",user);
+        int userLikeCount = likeService.findUserLikeCount(userId);
+        System.out.println("likecout"+userLikeCount);
+        model.addAttribute("likeCount",userLikeCount);
+        return "/site/profile";
     }
 }

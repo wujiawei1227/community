@@ -1,10 +1,13 @@
 package com.wu.controller;
 
+import com.wu.pojo.CommunityConstant;
 import com.wu.pojo.Discuss_Post;
 import com.wu.pojo.Page;
 import com.wu.pojo.User;
 import com.wu.service.DiscussPortService;
+import com.wu.service.LikeService;
 import com.wu.service.UserService;
+import com.wu.utils.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,11 +27,13 @@ import java.util.Map;
  * @create: 2021-01-24 17:53
  **/
 @Controller
-public class homeController {
+public class homeController implements CommunityConstant {
     @Autowired
     private DiscussPortService discussPortService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LikeService likeService;
     @RequestMapping(path = "/index",method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page){
         page.setRows(discussPortService.findDiscussPostRows(0));
@@ -42,6 +47,8 @@ public class homeController {
                 int userId = discuss_post.getUserId();
                 User userById = userService.findUserById(userId);
                 map.put("user",userById);
+                long likeCount=likeService.findEntityLikeCount(ENTITY_TYPE_POST,discuss_post.getId());
+                map.put("likeCount",likeCount);
                 discussPosts.add(map);
             }
         }
