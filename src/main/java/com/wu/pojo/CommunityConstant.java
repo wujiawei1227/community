@@ -51,4 +51,12 @@ public interface CommunityConstant {
      * @return
      **/
     int ENTITY_TYPE_COMMENT=2;
+    /*
+     *
+     * @Description //TODO 实体类型 用户
+     * @Param
+     * @return
+     **/
+    int ENTITY_TYPE_USER=3;
+
 }

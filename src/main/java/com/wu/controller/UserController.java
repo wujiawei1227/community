@@ -1,6 +1,8 @@
 package com.wu.controller;
 
+import com.wu.pojo.CommunityConstant;
 import com.wu.pojo.User;
+import com.wu.service.FollowService;
 import com.wu.service.LikeService;
 import com.wu.service.UserService;
 import com.wu.utils.CommunityUtil;
@@ -33,7 +35,7 @@ import java.util.Map;
  **/
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController  implements CommunityConstant {
 
     private static final Logger logger= LoggerFactory.getLogger(UserController.class);
 
@@ -49,6 +51,8 @@ public class UserController {
     private HostHolder holder;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private FollowService followService;
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
     public String getSettingPage(){
         return "/site/setting";
@@ -141,7 +145,19 @@ public class UserController {
         }
         model.addAttribute("user",user);
         int userLikeCount = likeService.findUserLikeCount(userId);
-        System.out.println("likecout"+userLikeCount);
+        //查询关注数量
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount",followeeCount);
+        //查询粉丝数量
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount",followerCount);
+        //是否已关注
+        boolean hasFollowed=false;
+        if (holder.getUser()!=null)
+        {
+            hasFollowed=followService.hasFollowed(holder.getUser().getId(),ENTITY_TYPE_USER,userId);
+        }
+        model.addAttribute("hasFollowed",hasFollowed);
         model.addAttribute("likeCount",userLikeCount);
         return "/site/profile";
     }
