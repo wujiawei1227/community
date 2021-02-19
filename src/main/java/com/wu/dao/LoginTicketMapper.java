@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper
 @Component
+@Deprecated
 public interface LoginTicketMapper {
     @Select({
             "insert into login_ticket(user_id,ticket,status,expired) ",
