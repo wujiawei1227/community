@@ -29,4 +29,10 @@
         insert into comment(<include refid="insertFields"></include>)
         values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
     </insert>
+    <select id="selectCommentById" resultType="com.wu.pojo.Comment">
+        select <include refid="selectFields">  </include>
+        from comment
+        wnere id=#{id}
+    </select>
+
 </mapper>

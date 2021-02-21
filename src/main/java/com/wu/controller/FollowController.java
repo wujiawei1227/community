@@ -1,6 +1,8 @@
 package com.wu.controller;
 
+import com.wu.event.EventProducer;
 import com.wu.pojo.CommunityConstant;
+import com.wu.pojo.Event;
 import com.wu.pojo.Page;
 import com.wu.pojo.User;
 import com.wu.service.FollowService;
@@ -33,12 +35,22 @@ public class FollowController implements CommunityConstant {
     private HostHolder holder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventProducer eventProducer;
     @RequestMapping(path = "/follow",method = RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType,int entityId)
     {
         User user=holder.getUser();
         service.follow(user.getId(),entityType,entityId);
+        //出发关注事件
+        Event event=new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setUserId(holder.getUser().getId())
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId);
+        eventProducer.fireEvent(event);
         return CommunityUtil.getJSONString(0,"已关注");
     }
     @RequestMapping(path = "/unfollow",method = RequestMethod.POST)

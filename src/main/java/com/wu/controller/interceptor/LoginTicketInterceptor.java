@@ -40,21 +40,11 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         {
             Login_Ticket ticketByTicket = service.getTicketByTicket(ticket);
             //检测凭证是否有效
-            if (ticketByTicket!=null&&ticketByTicket.getStatus()==0&&ticketByTicket.getExpired().after(new Date()));
+            if (ticketByTicket!=null&&ticketByTicket.getStatus()==0&&ticketByTicket.getExpired().after(new Date()))
             {//根据凭证查询用户
-                User userById = null;
-                try {
-                    userById = service.findUserById(ticketByTicket.getUserId());
-                } catch (Exception e) {
-                    if (userById==null){
-                        return true;
-                    }else {
-                        throw e;
-                    }
-                }
+                User userById = service.findUserById(ticketByTicket.getUserId());
                 //在本次请求中持有该用户
-                    holder.setUser(userById);
-
+                holder.setUser(userById);
             }
         }
         return true;

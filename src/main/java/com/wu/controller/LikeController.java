@@ -1,5 +1,8 @@
 package com.wu.controller;
 
+import com.wu.event.EventProducer;
+import com.wu.pojo.CommunityConstant;
+import com.wu.pojo.Event;
 import com.wu.pojo.User;
 import com.wu.service.LikeService;
 import com.wu.utils.CommunityUtil;
@@ -20,15 +23,16 @@ import java.util.Map;
  * @create: 2021-02-13 10:43
  **/
 @Controller
-public class LikeController {
+public class LikeController  implements CommunityConstant {
     @Autowired
     private LikeService service;
     @Autowired
     private HostHolder holder;
-
+    @Autowired
+    private EventProducer eventProducer;
     @RequestMapping(path = "/like",method = RequestMethod.POST)
     @ResponseBody
-    public String like(int entityType,int entityId,int entityUserId)
+    public String like(int entityType,int entityId,int entityUserId,int postId)
     {
         User user =holder.getUser();
         //点赞
@@ -40,6 +44,18 @@ public class LikeController {
         Map<String,Object> map=new HashMap<>();
         map.put("likeCount",likecount);
         map.put("likeStatus",entityLikeStatus);
+        //出发点赞事件
+        if (entityLikeStatus==1)
+        {
+            Event event=new Event()
+                    .setTopic(TOPIC_LIKE)
+                    .setUserId(holder.getUser().getId())
+                    .setEntityType(entityType)
+                    .setEntityId(entityId)
+                    .setEntityUserId(entityUserId)
+                    .setData("postId",postId);
+            eventProducer.fireEvent(event);
+        }
         return CommunityUtil.getJSONString(0,null,map);
 
 
