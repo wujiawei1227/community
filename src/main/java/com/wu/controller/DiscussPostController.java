@@ -1,5 +1,6 @@
 package com.wu.controller;
 
+import com.wu.event.EventProducer;
 import com.wu.pojo.*;
 import com.wu.service.CommentService;
 import com.wu.service.DiscussPortService;
@@ -38,6 +39,8 @@ public class DiscussPostController implements CommunityConstant {
     private CommentService commentService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private EventProducer eventProducer;
 
     @ResponseBody
     @RequestMapping(path = "/insert", method = RequestMethod.POST)
@@ -52,6 +55,12 @@ public class DiscussPostController implements CommunityConstant {
         post.setCreateTime(new Date());
         post.setUserId(user.getId());
         service.addDiscussPost(post);
+        //出发发帖事件
+        Event event=new Event().setTopic(TOPIC_PUBLISH)
+                .setUserId(user.getId())
+                .setEntityType(ENTITY_TYPE_POST)
+                .setEntityId(post.getId());
+        eventProducer.fireEvent(event);
 
         return CommunityUtil.getJSONString(0, "发布成功");
     }
@@ -68,7 +77,7 @@ public class DiscussPostController implements CommunityConstant {
         long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeCount",likeCount);
         //点赞状态
-        int entityLikeStatus = holder==null?0:likeService.findEntityLikeStatus(holder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
+        int entityLikeStatus = holder.getUser()==null?0:likeService.findEntityLikeStatus(holder.getUser().getId(), ENTITY_TYPE_POST, discussPostId);
         model.addAttribute("likeStatus",entityLikeStatus);
 
         //评论分页信息

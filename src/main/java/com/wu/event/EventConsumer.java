@@ -2,8 +2,11 @@ package com.wu.event;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wu.pojo.CommunityConstant;
+import com.wu.pojo.Discuss_Post;
 import com.wu.pojo.Event;
 import com.wu.pojo.Message;
+import com.wu.service.DiscussPortService;
+import com.wu.service.ElasticsearchService;
 import com.wu.service.MessageService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
@@ -30,6 +33,10 @@ public class EventConsumer implements CommunityConstant {
     private KafkaTemplate kafkaTemplate;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private DiscussPortService discussPortService;
+    @Autowired
+    private ElasticsearchService elasticsearchService;
 
     @KafkaListener(topics ={TOPIC_LIKE, TOPIC_FOLLOW, TOPIC_COMMENT })
     public void handleCommentMessage(ConsumerRecord record)
@@ -62,6 +69,24 @@ public class EventConsumer implements CommunityConstant {
         message.setContent(JSONObject.toJSONString(content));
          messageService.addMessage(message);
 
+    }
+    //消费发帖事件
+    @KafkaListener(topics = {TOPIC_PUBLISH})
+    public void handlePublishMessage(ConsumerRecord record)
+    {
+        if (record==null||record.value()==null)
+        {
+            logger.error("消息的内容不能为空");
+            return;
+        }
+        Event event=JSONObject.parseObject(record.value().toString(),Event.class);
+        if (event==null)
+        {
+            logger.error("消息格式错误");
+            return;
+        }
+        Discuss_Post post=discussPortService.findById(event.getEntityId());
+        elasticsearchService.saveDiscussPost(post);
     }
 
 }

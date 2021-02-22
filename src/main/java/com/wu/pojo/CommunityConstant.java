@@ -72,6 +72,13 @@ public interface CommunityConstant {
      * 主题: 关注
      */
     String TOPIC_FOLLOW = "follow";
+    /*
+    *
+     * @Description //TODO 主题 发帖
+     * @Param
+     * @return
+     **/
+    String TOPIC_PUBLISH="publish";
 
     /**
      * 系统用户ID
