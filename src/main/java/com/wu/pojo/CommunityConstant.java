@@ -74,7 +74,7 @@ public interface CommunityConstant {
     String TOPIC_FOLLOW = "follow";
     /*
     *
-     * @Description //TODO 主题 发帖
+     * @Description // 主题 发帖
      * @Param
      * @return
      **/
