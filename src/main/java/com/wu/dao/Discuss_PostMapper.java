@@ -18,9 +18,13 @@ import java.util.List;
 @Component
 public interface Discuss_PostMapper {
 
-  List<Discuss_Post> selctDiscuss_post(int user_id,int offset,int limit);
+  List<Discuss_Post> selctDiscuss_post(int user_id,int offset,int limit,int orderMode);
   int Discuss_portCount(@Param("userId") int user_id);
   int insertDiscussPost(Discuss_Post post);
   Discuss_Post findById(int id);
   int  updateCommentCount(int id,int commentCount);
+  int updateType(int id,int type);
+  int updateStatus(int id,int status);
+  int updateScore(int id,double score);
+
 }

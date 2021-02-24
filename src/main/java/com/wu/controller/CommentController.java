@@ -8,7 +8,9 @@ import com.wu.pojo.Event;
 import com.wu.service.CommentService;
 import com.wu.service.DiscussPortService;
 import com.wu.utils.HostHolder;
+import com.wu.utils.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,8 @@ public class CommentController implements CommunityConstant {
     private HostHolder holder;
     @Autowired
     private EventProducer eventProducer;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @RequestMapping(path = "/add/{discussPostId}",method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId")int discussId,
@@ -72,6 +76,10 @@ public class CommentController implements CommunityConstant {
                     .setEntityType(ENTITY_TYPE_POST)
                     .setEntityId(discussId);
             eventProducer.fireEvent(event);
+            //计算帖子分数
+            String postScoreKey = RedisKeyUtil.getPostScoreKey();
+            redisTemplate.opsForSet().add(postScoreKey,discussId);
+
         }
         return "redirect:/discusspost/detail/"+discussId;
     }
